@@ -1,9 +1,11 @@
-var http =   require('http')
-  , koa =    require('koa')
+var http   = require('http')
+  , koa    = require('koa')
   , logger = require('koa-logger')
-  , parse =  require('co-body')
-  , route =  require('koa-route')
-  , views =  require('co-views')
+  , parse  = require('co-body')
+  , route  = require('koa-route')
+  , serve  = require('koa-static')
+  , stylus = require('koa-stylus')
+  , views  = require('co-views')
   ;
 
 // Create koa app
@@ -14,6 +16,8 @@ var todos = []; //Note: DB change to MongoDB
 
 // middleware
 app.use(logger());
+app.use(stylus('./public'));
+app.use(serve('./public'));
 
 // Route middleware
 app.use(route.get('/', list));
@@ -25,7 +29,7 @@ app.use(route.post('/todo/create', create));
 app.use(route.post('/todo/update', update));
 
 // Specify Swig view engine
-var render= views(__dirname + '/views', {map: {html: 'swig'}});
+var render = views(__dirname + '/views', {map: {html: 'swig'}});
 
 // Route definitions
 
