@@ -19,15 +19,6 @@ app.use(logger());
 app.use(stylus('./public'));
 app.use(serve('./public'));
 
-// Route middleware
-app.use(route.get('/', list));
-app.use(route.get('/todo/new', add));
-app.use(route.get('/todo/:id', show));
-app.use(route.get('/todo/delete/:id', remove));
-app.use(route.get('/todo/edit/:id', edit));
-app.use(route.post('/todo/create', create));
-app.use(route.post('/todo/update', update));
-
 // Specify Swig view engine
 var render = views(__dirname + '/views', {map: {html: 'swig'}});
 
@@ -91,8 +82,8 @@ function *remove(id) {
  */
 function *create() {
   var todo = yield parse(this);
-  todo.created_on = new Date;
-  todo.updated_on = new Date;
+  todo.created_on = new Date();
+  todo.updated_on = new Date();
   var id = todos.push(todo);
   todo.id = id-1; // id with index of the array
   this.redirect('/');
@@ -106,9 +97,18 @@ function *update() {
   var index = todo.id;
   todos[index].name = todo.name;
   todos[index].description = todo.description;
-  todos[index].updated_on = new Date;
+  todos[index].updated_on = new Date();
   this.redirect('/');
 }
+
+// Route middleware
+app.use(route.get('/', list));
+app.use(route.get('/todo/new', add));
+app.use(route.get('/todo/:id', show));
+app.use(route.get('/todo/delete/:id', remove));
+app.use(route.get('/todo/edit/:id', edit));
+app.use(route.post('/todo/create', create));
+app.use(route.post('/todo/update', update));
 
 // Create HTTP Server
 http.createServer(app.callback()).listen(3000);
