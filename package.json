@@ -13,6 +13,10 @@
   "author": "Philip Woods",
   "license": "ISC",
   "dependencies": {
-    "koa": "~0.5.1"
+    "koa": "~0.5.1",
+    "koa-route": "~1.1.1",
+    "co-body": "0.0.1",
+    "koa-logger": "~1.2.0",
+    "co-views": "~0.2.0"
   }
 }
