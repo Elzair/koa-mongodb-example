@@ -14,3 +14,8 @@ Then run the following commands in the root directory of this project.
 
     npm install
     npm start
+
+Special Thanks
+--------------
+
+Thank you [Shiju Varghese](http://weblogs.asp.net/shijuvarghese/default.aspx) for writing the [original tutorial](http://weblogs.asp.net/shijuvarghese/archive/2014/01/12/a-simple-crud-demo-with-koa-js.aspx). I simply split the example into multiple files and added support for MongoDB.
