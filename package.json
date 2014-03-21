@@ -25,5 +25,8 @@
     "q": "~2.0.0",
     "co-monk": "~1.0.0",
     "monk": "~0.8.1"
+  },
+  "devDependencies": {
+    "nodemon": "~1.0.17"
   }
 }
