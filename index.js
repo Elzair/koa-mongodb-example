@@ -1,7 +1,6 @@
 var http     = require('http')
   , koa      = require('koa')
   , logger   = require('koa-logger')
-  , mongoose = require('mongoose')
   , route    = require('koa-route')
   , routes   = require('./routes')
   , serve    = require('koa-static')
@@ -10,9 +9,6 @@ var http     = require('http')
 
 // Create koa app
 var app = koa();
-
-// Connect to MongoDB
-mongoose.connect('mongodb://localhost');
 
 // middleware
 app.use(logger());

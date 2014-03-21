@@ -1,5 +1,6 @@
 var render = require('../lib/views')
   , parse  = require('co-body')
+  , Todo   = require('../models/todo')
   ;
 
 // Route definitions
@@ -8,6 +9,7 @@ var render = require('../lib/views')
  * Item List.
  */
 exports.list = function *() {
+  var todos = yield Todo.find({});
   this.body = yield render('index', {todos: todos});
 };
 
@@ -22,38 +24,29 @@ exports.add = function *() {
  * Form for editing a todo item.
  */
 exports.edit = function *(id) {
-  var todo = todos[id];
+  var todo = yield Todo.findById(id);
   if (!todo) {
     this.throw(404, 'invalid todo id');
   }
-  this.body = yield render('edit', {todo: todo});
+  this.body = yield render('edit', {todo: todo.toJSON()});
 };
 
 /**
  * Show details of a todo item.
  */
 exports.show = function *(id) {
-  var todo = todos[id];
+  var todo = yield Todo.findById(id);
   if (!todo) {
     this.throw(404, 'invalid todo id');
   }
-  this.body = yield render('show', {todo: todo});
+  this.body = yield render('show', {todo: todo.toJSON()});
 };
 
 /**
  * Delete a todo item
  */
 exports.remove = function *(id) {
-  var todo = todos[id];
-  if (!todo) {
-    this.throw(404, 'invalid todo id');
-  }
-  todos.splice(id, 1);
-  // Changing the id for working with index
-  var i = 0;
-  for (i=0; i<todos.length; i++) {
-    todos[i].id = i;
-  }
+  yield Todo.findByIdAndRemove(id);
   this.redirect('/');
 };
 
@@ -61,11 +54,13 @@ exports.remove = function *(id) {
  * Create a todo item in the data store
  */
 exports.create = function *() {
-  var todo = yield parse(this);
+  var input = yield parse(this);
+  var todo = new Todo();
+  todo.name = input.name;
+  todo.description = input.description;
   todo.created_on = new Date();
   todo.updated_on = new Date();
-  var id = todos.push(todo);
-  todo.id = id-1; // id with index of the array
+  yield todo.save();
   this.redirect('/');
 };
 
@@ -73,11 +68,12 @@ exports.create = function *() {
  * Update an existing todo item.
  */
 exports.update = function *() {
-  var todo = yield parse(this);
-  var index = todo.id;
-  todos[index].name = todo.name;
-  todos[index].description = todo.description;
-  todos[index].updated_on = new Date();
+  var input = yield parse(this);
+  var todo = yield Todo.findById(input.id);
+  todo.name = input.name;
+  todo.description = input.description;
+  todo.updated_on = new Date();
+  yield todo.save();
   this.redirect('/');
 };
 
