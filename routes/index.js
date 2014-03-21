@@ -1,7 +1,12 @@
-var render = require('../lib/views')
+var monk   = require('monk')
   , parse  = require('co-body')
-  , Todo   = require('../models/todo')
+  , render = require('../lib/views')
+  , wrap   = require('co-monk')
   ;
+
+// Initialize database connection
+var db = monk('localhost/test');
+var todos = wrap(db.get('todos'));
 
 // Route definitions
 
@@ -9,8 +14,7 @@ var render = require('../lib/views')
  * Item List.
  */
 exports.list = function *() {
-  var todos = yield Todo.find({});
-  this.body = yield render('index', {todos: todos});
+  this.body = yield render('index', {todos: todos.find({})});
 };
 
 /**
@@ -24,29 +28,29 @@ exports.add = function *() {
  * Form for editing a todo item.
  */
 exports.edit = function *(id) {
-  var todo = yield Todo.findById(id);
-  if (!todo) {
+  var result = yield todos.findById(id);
+  if (!result) {
     this.throw(404, 'invalid todo id');
   }
-  this.body = yield render('edit', {todo: todo.toJSON()});
+  this.body = yield render('edit', {todo: result});
 };
 
 /**
  * Show details of a todo item.
  */
 exports.show = function *(id) {
-  var todo = yield Todo.findById(id);
-  if (!todo) {
+  var result = yield todos.findById(id);
+  if (!result) {
     this.throw(404, 'invalid todo id');
   }
-  this.body = yield render('show', {todo: todo.toJSON()});
+  this.body = yield render('show', {todo: result});
 };
 
 /**
  * Delete a todo item
  */
 exports.remove = function *(id) {
-  yield Todo.findByIdAndRemove(id);
+  yield todos.remove(id);
   this.redirect('/');
 };
 
@@ -55,12 +59,13 @@ exports.remove = function *(id) {
  */
 exports.create = function *() {
   var input = yield parse(this);
-  var todo = new Todo();
-  todo.name = input.name;
-  todo.description = input.description;
-  todo.created_on = new Date();
-  todo.updated_on = new Date();
-  yield todo.save();
+  var d = new Date();
+  yield todos.insert({
+    name: input.name,
+    description: input.description,
+    created_on: d,
+    updated_on: d
+  });
   this.redirect('/');
 };
 
@@ -69,11 +74,7 @@ exports.create = function *() {
  */
 exports.update = function *() {
   var input = yield parse(this);
-  var todo = yield Todo.findById(input.id);
-  todo.name = input.name;
-  todo.description = input.description;
-  todo.updated_on = new Date();
-  yield todo.save();
+  yield todos.updateById(input.id, {updated_on: new Date()});
   this.redirect('/');
 };
 

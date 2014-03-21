@@ -1,4 +1,4 @@
-var mongoose = require('../lib/mongoose');
+var mongoose = require('mongoose');
 
 var TodoSchema = new mongoose.Schema({
     name:        {type: String}
