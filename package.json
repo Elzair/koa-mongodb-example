@@ -1,6 +1,7 @@
 {
   "name": "koa-mongodb-example",
   "version": "0.0.5",
+  "repository": "https://github.com/Elzair/koa-mongodb-example",
   "description": "Simple example of a multi-file CRUD app using Koa and MongoDB",
   "main": "index.js",
   "scripts": {
