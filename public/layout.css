@@ -8,18 +8,18 @@ h1 {
 h2 {
   font-size: 1.2em;
 }
-#posts {
+#todos {
   margin: 0;
   padding: 0;
 }
-#posts li {
+#todos li {
   margin: 40px 0;
   padding: 0;
   padding-bottom: 20;
   border-bottom: 1px solid #eee;
   list-style: none;
 }
-#posts li:last-child {
+#todos li:last-child {
   border-bottom: none;
 }
 textarea {
