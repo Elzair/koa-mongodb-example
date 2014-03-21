@@ -8,6 +8,7 @@
     <p><input type="hidden" value="{{ todo._id.toString() }}" name="id"></p>
     <p><input type="text" value="{{ todo.name }}" name="name"></p>
     <p><input type="text" value="{{ todo.description }}" name="description"></p>
+    <p><input type="hidden" value="{{ todo.created_on.toString() }}" name="created_on"></p>
     <p><input type="submit" value="Update"></p>
   </form>
 {% endblock %}

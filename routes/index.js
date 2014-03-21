@@ -27,6 +27,7 @@ exports.add = function *() {
  */
 exports.edit = function *(id) {
   var result = yield todos.findById(id);
+  console.log(JSON.stringify(result));
   if (!result) {
     this.throw(404, 'invalid todo id');
   }
@@ -77,6 +78,7 @@ exports.update = function *() {
   yield todos.updateById(input.id, {
     name: input.name,
     description: input.description,
+    created_on: new Date(input.created_on),
     updated_on: new Date()});
   this.redirect('/');
 };
