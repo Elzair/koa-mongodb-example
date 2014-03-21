@@ -10,9 +10,9 @@
     {% for todo in todos %}
       <li>
         <strong>{{ todo.name }}</strong> ||
-        <a href="/todo/{{ todo.id }}"></a> ||
-        <a href="/todo/edit/{{ todo.id }}"></a> ||
-        <a href="/todo/delete/{{ todo.id }}"></a>
+        <a href="/todo/{{ todo._id.toString() }}">Show</a> ||
+        <a href="/todo/edit/{{ todo._id.toString() }}">Edit</a> ||
+        <a href="/todo/delete/{{ todo._id.toString() }}">Delete</a>
       </li>
     {% endfor %}
   </ul>

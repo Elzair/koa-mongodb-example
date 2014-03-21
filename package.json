@@ -1,10 +1,10 @@
 {
-  "name": "koatest",
-  "version": "0.0.1",
-  "description": "test of koa",
+  "name": "koa-mongodb-example",
+  "version": "0.0.5",
+  "description": "Simple example of a multi-file CRUD app using Koa and MongoDB",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "nodemon --harmony index.js",
     "start": "node --harmony index.js"
   },
   "keywords": [
@@ -22,7 +22,6 @@
     "koa-static": "~1.4.3",
     "koa-stylus": "0.0.3",
     "swig": "~1.3.2",
-    "mongoose": "~3.8.8",
     "q": "~2.0.0",
     "co-monk": "~1.0.0",
     "monk": "~0.8.1"

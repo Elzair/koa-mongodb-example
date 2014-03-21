@@ -14,7 +14,9 @@ var todos = wrap(db.get('todos'));
  * Item List.
  */
 exports.list = function *() {
-  this.body = yield render('index', {todos: todos.find({})});
+  var results = yield todos.find({});
+  console.log(results);
+  this.body = yield render('index', {todos: results});
 };
 
 /**
@@ -50,7 +52,7 @@ exports.show = function *(id) {
  * Delete a todo item
  */
 exports.remove = function *(id) {
-  yield todos.remove(id);
+  yield todos.remove({"_id": id});
   this.redirect('/');
 };
 
@@ -59,6 +61,7 @@ exports.remove = function *(id) {
  */
 exports.create = function *() {
   var input = yield parse(this);
+  console.log(input);
   var d = new Date();
   yield todos.insert({
     name: input.name,
@@ -74,7 +77,11 @@ exports.create = function *() {
  */
 exports.update = function *() {
   var input = yield parse(this);
-  yield todos.updateById(input.id, {updated_on: new Date()});
+  console.log(input);
+  yield todos.updateById(input.id, {
+    name: input.name,
+    description: input.description,
+    updated_on: new Date()});
   this.redirect('/');
 };
 
