@@ -1,12 +1,8 @@
-var monk   = require('monk')
-  , parse  = require('co-body')
+var parse  = require('co-body')
   , render = require('../lib/views')
-  , wrap   = require('co-monk')
+  , todos  = require('../models/todos')
   ;
 
-// Initialize database connection
-var db = monk('localhost/test');
-var todos = wrap(db.get('todos'));
 
 // Route definitions
 
